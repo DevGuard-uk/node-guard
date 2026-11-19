@@ -1,4 +1,4 @@
-# @devguard/node-guard
+# @devguard-uk/node-guard
 
 > DevGuard Web & Node Guard Middleware with Domain Lock, Fail-Safe Open, and SEO-Safe HTTP 503 Lockout Pages.
 
@@ -14,7 +14,7 @@
 
 ```js
 const express = require('express');
-const { createWebGuardMiddleware } = require('@devguard/node-guard');
+const { createWebGuardMiddleware } = require('@devguard-uk/node-guard');
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use(createWebGuardMiddleware({
 
 ```js
 // middleware.js
-import { createNextGuardMiddleware } from '@devguard/node-guard';
+import { createNextGuardMiddleware } from '@devguard-uk/node-guard';
 
 const guard = createNextGuardMiddleware({
   projectId: process.env.DEVGUARD_PROJECT_ID,

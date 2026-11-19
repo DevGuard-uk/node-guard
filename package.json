@@ -1,5 +1,5 @@
 {
-  "name": "@devguard/node-guard",
+  "name": "@devguard-uk/node-guard",
   "version": "1.0.0",
   "description": "DevGuard Web & Node Guard Middleware with Domain Lock, Fail-Safe Open, and SEO-safe HTTP 503 lockout responses",
   "main": "index.js",
