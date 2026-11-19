@@ -1,0 +1,26 @@
+{
+  "name": "@devguard/node-guard",
+  "version": "1.0.0",
+  "description": "DevGuard Web & Node Guard Middleware with Domain Lock, Fail-Safe Open, and SEO-safe HTTP 503 lockout responses",
+  "main": "index.js",
+  "bin": {
+    "devguard-export": "bin/devguard-export.js",
+    "devguard-sourcemaps": "bin/devguard-sourcemaps.js",
+    "devguard": "bin/devguard-export.js"
+  },
+  "types": "index.d.ts",
+  "keywords": [
+    "devguard",
+    "licensing",
+    "domain-lock",
+    "middleware",
+    "express",
+    "nextjs",
+    "security"
+  ],
+  "author": "DevGuard",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
