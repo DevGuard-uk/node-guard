@@ -6,6 +6,7 @@
 function generateWebTelemetryScriptSnippet(options = {}) {
   const {
     projectId,
+    sdkKey,
     apiKey,
     endpoint = '/api/v1/telemetry',
     sampleRate = 1.0,
@@ -18,9 +19,10 @@ function generateWebTelemetryScriptSnippet(options = {}) {
     throw new Error('projectId is required to generate web telemetry snippet');
   }
 
+  const resolvedKey = sdkKey || apiKey || null;
   const configJson = JSON.stringify({
     projectId,
-    ...(apiKey ? { apiKey } : {}),
+    ...(resolvedKey ? { sdkKey: resolvedKey } : {}),
     endpoint,
     sampleRate,
     enableBreadcrumbs,

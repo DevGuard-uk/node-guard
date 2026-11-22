@@ -96,7 +96,11 @@ async function runCli(argv = process.argv.slice(2)) {
   }
 
   options.projectId = options.projectId || process.env.DEVGUARD_PROJECT_ID;
-  options.apiKey = options.apiKey || process.env.DEVGUARD_API_KEY;
+  options.apiKey =
+    options.sdkKey ||
+    options.apiKey ||
+    process.env.DEVGUARD_SDK_KEY ||
+    process.env.DEVGUARD_API_KEY;
 
   if (!options.entry) {
     if (fs.existsSync('server.js')) {

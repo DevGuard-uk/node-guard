@@ -104,7 +104,11 @@ async function resolveDecryptionKey(options = {}, manifest = {}) {
   }
 
   const apiUrl = (options.apiUrl || process.env.DEVGUARD_API_URL || 'https://api.devguard.uk').replace(/\/+$/, '');
-  const apiKey = options.apiKey || process.env.DEVGUARD_API_KEY;
+  const apiKey =
+    options.sdkKey ||
+    options.apiKey ||
+    process.env.DEVGUARD_SDK_KEY ||
+    process.env.DEVGUARD_API_KEY;
 
   if (typeof options.fetchKey === 'function') {
     try {

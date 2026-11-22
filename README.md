@@ -20,7 +20,8 @@ const app = express();
 
 app.use(createWebGuardMiddleware({
   projectId: 'proj_abc123',
-  apiKey: process.env.DEVGUARD_SECRET_KEY,
+  // Prefer project SDK key (Portal → Project SDK key). Falls back to DEVGUARD_API_KEY.
+  sdkKey: process.env.DEVGUARD_SDK_KEY,
   failSafe: 'open', // Default
   allowedDomains: ['example.com', '*.example.com'],
 }));

@@ -27,7 +27,8 @@ const { computeCanonicalSignableString } = require('./bootloader');
  * @param {string|crypto.KeyObject} [options.signingPublicKey] Ed25519 public key (PEM/KeyObject)
  * @param {boolean} [options.copyBootloader=true] Whether to include standalone bootloader in bundle
  * @param {string} [options.apiUrl] DevGuard API URL
- * @param {string} [options.apiKey] DevGuard API Key
+ * @param {string} [options.sdkKey] Project SDK key (preferred)
+ * @param {string} [options.apiKey] Legacy API / Master Secret (fallback)
  * @param {boolean} [options.registerKeyWithApi=false] Register key with DevGuard API
  * @param {object} [options.metadata] Additional metadata to record in manifest
  * @returns {Promise<object>} Export manifest, keys, and paths
@@ -185,6 +186,7 @@ return [
     'enabled' => env('DEVGUARD_ENABLED', true),
     'project_id' => env('DEVGUARD_PROJECT_ID', ${JSON.stringify(options.projectId)}),
     'api_url' => env('DEVGUARD_API_URL', 'https://api.devguard.uk'),
+    'sdk_key' => env('DEVGUARD_SDK_KEY', null),
     'api_key' => env('DEVGUARD_API_KEY', null),
     'allowed_domains' => env('DEVGUARD_ALLOWED_DOMAINS')
         ? array_map('trim', explode(',', env('DEVGUARD_ALLOWED_DOMAINS')))
@@ -268,7 +270,12 @@ def wrap_asgi(app):
   }
 
   // 10. Optional API key registration
-  if (options.registerKeyWithApi && options.apiKey) {
+  const authKey =
+    options.sdkKey ||
+    options.apiKey ||
+    process.env.DEVGUARD_SDK_KEY ||
+    process.env.DEVGUARD_API_KEY;
+  if (options.registerKeyWithApi && authKey) {
     const apiUrl = (options.apiUrl || process.env.DEVGUARD_API_URL || 'https://api.devguard.uk').replace(/\/+$/, '');
     const endpoint = `${apiUrl}/api/v1/projects/${encodeURIComponent(options.projectId)}/secured-export/key`;
 
@@ -277,8 +284,8 @@ def wrap_asgi(app):
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${options.apiKey}`,
-          'X-DevGuard-Key': options.apiKey,
+          'Authorization': `Bearer ${authKey}`,
+          'X-DevGuard-Key': authKey,
         },
         body: JSON.stringify({
           key: keyBuffer.toString('hex'),
